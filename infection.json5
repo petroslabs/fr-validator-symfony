@@ -1,0 +1,16 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "logs": {
+        "text": "infection.log",
+        // Pushes the MSI to the Stryker Dashboard for the README badge.
+        // No-ops without STRYKER_DASHBOARD_API_KEY (e.g. on forks/local runs).
+        "stryker": {
+            "badge": "main"
+        }
+    }
+}

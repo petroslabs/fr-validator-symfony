@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php }} / Symfony ${{ matrix.symfony }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+        symfony: ['6.4.*', '7.0.*']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Require Symfony ${{ matrix.symfony }}
+        run: composer require symfony/validator:"${{ matrix.symfony }}" --no-update
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-progress
+
+      - name: Run tests
+        run: composer test
+
+      - name: Static analysis
+        run: composer stan
+
+  cs:
+    name: Code style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-progress
+
+      - name: Check code style
+        run: composer cs
+
+  mutation:
+    name: Mutation testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: pcov
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-progress
+
+      - name: Install Infection
+        # Not in composer.json: infection/infection requires a newer PHP
+        # than this package's own floor, which would break dependency
+        # resolution on the oldest PHP leg of the test matrix.
+        run: composer require --dev infection/infection:^0.35 --no-interaction --no-update
+
+      - name: Install dependencies (with Infection)
+        run: composer update --prefer-dist --no-progress
+
+      - name: Run Infection
+        env:
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+        run: composer infection
