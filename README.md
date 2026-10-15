@@ -1,6 +1,7 @@
 # fr-validator-symfony
 
 [![CI](https://github.com/petroslabs/fr-validator-symfony/actions/workflows/ci.yml/badge.svg)](https://github.com/petroslabs/fr-validator-symfony/actions/workflows/ci.yml)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fpetroslabs%2Ffr-validator-symfony%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/petroslabs/fr-validator-symfony/main)
 [![Packagist](https://img.shields.io/packagist/v/petroslabs/fr-validator-symfony)](https://packagist.org/packages/petroslabs/fr-validator-symfony)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 

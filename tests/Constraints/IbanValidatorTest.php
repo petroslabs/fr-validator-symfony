@@ -7,6 +7,7 @@ namespace PetrosLabs\FrValidatorSymfony\Tests\Constraints;
 use PetrosLabs\FrValidatorSymfony\Constraints\Iban;
 use PetrosLabs\FrValidatorSymfony\Constraints\IbanValidator;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -35,6 +36,26 @@ final class IbanValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate('', new Iban());
 
         $this->assertNoViolation();
+    }
+
+    #[Test]
+    public function it_defaults_to_the_default_validation_group(): void
+    {
+        $constraint = new Iban();
+
+        self::assertSame([Constraint::DEFAULT_GROUP], $constraint->groups);
+    }
+
+    #[Test]
+    public function a_custom_message_is_used_in_the_violation(): void
+    {
+        $this->validator->validate('invalid', new Iban(message: 'Custom message: {{ reason }}'));
+
+        $this->buildViolation('Custom message: {{ reason }}')
+            ->setParameter('{{ value }}', '"invalid"')
+            ->setParameter('{{ reason }}', 'invalid_length')
+            ->setCode('invalid_length')
+            ->assertRaised();
     }
 
     #[Test]

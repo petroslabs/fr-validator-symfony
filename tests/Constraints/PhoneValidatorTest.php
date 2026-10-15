@@ -7,6 +7,7 @@ namespace PetrosLabs\FrValidatorSymfony\Tests\Constraints;
 use PetrosLabs\FrValidatorSymfony\Constraints\Phone;
 use PetrosLabs\FrValidatorSymfony\Constraints\PhoneValidator;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -35,6 +36,26 @@ final class PhoneValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate('', new Phone());
 
         $this->assertNoViolation();
+    }
+
+    #[Test]
+    public function it_defaults_to_the_default_validation_group(): void
+    {
+        $constraint = new Phone();
+
+        self::assertSame([Constraint::DEFAULT_GROUP], $constraint->groups);
+    }
+
+    #[Test]
+    public function a_custom_message_is_used_in_the_violation(): void
+    {
+        $this->validator->validate('invalid', new Phone(message: 'Custom message: {{ reason }}'));
+
+        $this->buildViolation('Custom message: {{ reason }}')
+            ->setParameter('{{ value }}', '"invalid"')
+            ->setParameter('{{ reason }}', 'invalid_length')
+            ->setCode('invalid_length')
+            ->assertRaised();
     }
 
     #[Test]

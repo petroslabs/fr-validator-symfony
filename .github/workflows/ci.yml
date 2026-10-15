@@ -12,7 +12,10 @@ jobs:
     strategy:
       matrix:
         php: ['8.2', '8.3', '8.4', '8.5']
-        symfony: ['6.4.*', '7.0.*']
+        # 7.0.* is intentionally excluded: every 7.0.x release is blocked
+        # by a Composer security advisory, so there's no safe way to pin
+        # the exact 7.x floor. 7.* resolves to the latest safe 7.x instead.
+        symfony: ['6.4.*', '7.*']
     steps:
       - uses: actions/checkout@v4
 

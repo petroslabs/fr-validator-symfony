@@ -48,8 +48,11 @@ abstract class AbstractFrConstraintValidator extends ConstraintValidator
          * Every concrete FailureReason enum in petroslabs/fr-validator is
          * string-backed, but the generic \BackedEnum contract it extends
          * allows int|string, so PHPStan can't narrow this from the marker
-         * interface alone — hence the cast. $failureReason is only null
-         * when $result is valid, which was already ruled out above.
+         * interface alone — hence the cast, a runtime no-op given real
+         * enum instances. $failureReason is only null when $result is
+         * valid, which was already ruled out above.
+         *
+         * @infection-ignore-all
          */
         $reason = null !== $failureReason ? (string) $failureReason->value : '';
 
