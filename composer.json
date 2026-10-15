@@ -47,12 +47,6 @@
             "@cs"
         ]
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/petroslabs/fr-validator"
-        }
-    ],
     "config": {
         "sort-packages": true,
         "allow-plugins": {

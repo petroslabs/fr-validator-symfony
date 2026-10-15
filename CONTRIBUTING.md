@@ -11,11 +11,6 @@ composer install
 PHP 8.2+ is required. If you use [mise](https://mise.jdx.dev), the pinned
 version is picked up automatically from `.mise.toml`.
 
-This package depends on `petroslabs/fr-validator` via a VCS repository
-entry in `composer.json` (pointing at its GitHub repo) rather than
-Packagist, until that package is published there too — see its own
-CONTRIBUTING.md for context.
-
 ## Before opening a PR
 
 ```bash
