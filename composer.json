@@ -17,7 +17,7 @@
     "require": {
         "php": "^8.2",
         "petroslabs/fr-validator": "^0.1",
-        "symfony/validator": "^6.4 || ^7.0"
+        "symfony/validator": "^8.1.11"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.59",
